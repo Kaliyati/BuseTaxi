@@ -6,35 +6,35 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.loopj.android.http.*;
+
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
-public class RaiderLogin extends AppCompatActivity  {
+import cz.msebera.android.httpclient.Header;
+
+public class RaiderLogin extends AppCompatActivity implements View.OnClickListener {
 
 
     // CONNECTION_TIMEOUT and READ_TIMEOUT are in milliseconds
 
-    public static final int CONNECTION_TIMEOUT=10000;
-    public static final int READ_TIMEOUT=15000;
+   TextView txt2;
     private EditText etEmail;
     private EditText etPassword;
     Button btnSignin;
-
-
 
 
     @Override
@@ -43,176 +43,88 @@ public class RaiderLogin extends AppCompatActivity  {
         setContentView(R.layout.activity_raider_login);
 
         // Get Reference to variables
-        etEmail = (EditText) findViewById(R.id.email);
-        etPassword = (EditText) findViewById(R.id.password);
-        final TextView txt2 =(TextView) findViewById(R.id.textViewSignin);
-        btnSignin =(Button) findViewById(R.id.btn_login);
+        etEmail = (EditText) findViewById(R.id.etemail);
+        etPassword = (EditText) findViewById(R.id.etpassword);
+         txt2 = (TextView) findViewById(R.id.textViewSignin);
 
-        btnSignin.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
+        btnSignin = (Button) findViewById(R.id.btn_login);
+        btnSignin.setOnClickListener(this);
+         txt2.setOnClickListener(this);
 
-                checkLogin();
-            }
-        });
-
-
-
-        txt2.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-
-             //   checkLogin();
-
-            }
-        });
-
-    }
-
-
-
-    // Triggers when LOGIN Button clicked
-
-    public void checkLogin() {
-
-        // Get text from email and passord field
-        final String email = etEmail.getText().toString();
-        final String password = etPassword.getText().toString();
-
-        // Initialize  AsyncLogin() class with email and password
-        if (email=="" || password==""){
-            Toast.makeText(RaiderLogin.this, "Email field cannot be empty", Toast.LENGTH_LONG).show();
-
-        }
-        else {
-            new AsyncLogin().execute(email,password);
-        }
 
 
     }
 
-    private class AsyncLogin extends AsyncTask<String, String, String>
-    {
-        ProgressDialog pdLoading = new ProgressDialog(RaiderLogin.this);
-        HttpURLConnection conn;
-        URL url = null;
+    @Override
+    public void onClick(View view) {
+        if (view==btnSignin){
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
+            Signin();
+        }
+        if (view==txt2){
+            Intent intent = new Intent(RaiderLogin.this,RaiderRegistration.class);
+            RaiderLogin.this.startActivity(intent);
+        }
+    }
 
-            //this method will be running on UI thread
-            pdLoading.setMessage("\tValidating your credentials...");
-            pdLoading.setCancelable(false);
-            pdLoading.show();
+    private void Signin() {
+
+        String email =etEmail.getText().toString();
+        String password = etPassword.getText().toString();
+
+        if (email.contentEquals("") || password.contentEquals("")){
+            Toast.makeText(RaiderLogin.this,"Fill in all the Feilds", Toast.LENGTH_LONG).show();
 
         }
-        @Override
-        protected String doInBackground(String... params) {
-            try {
+        else{
+            //Initialising progress dialog
+            final ProgressDialog progressDialog= new ProgressDialog(RaiderLogin.this);
 
-                // Enter URL address where your php file resides
-                url = new URL("http://www.zfu.agrkgroup.com/argk/Android/login.inc.php");
+            progressDialog.setTitle("Signing in");
+            progressDialog.setMessage("Please wait");
+            progressDialog.setCancelable(true);
+            progressDialog.show();
 
-            } catch (MalformedURLException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-                return "exception";
-            }
-            try {
-                // Setup HttpURLConnection class to send and receive data from php and mysql
-                conn = (HttpURLConnection)url.openConnection();
-                conn.setReadTimeout(READ_TIMEOUT);
-                conn.setConnectTimeout(CONNECTION_TIMEOUT);
-                conn.setRequestMethod("POST");
+            AsyncHttpClient client = new AsyncHttpClient();
+            RequestParams params = new RequestParams();
+            params.put("Email", email);
+            params.put("Password",password);
+            client.post("http://10.0.2.2/BuseTaxi/login.php", params, new TextHttpResponseHandler() {
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    progressDialog.dismiss();
+                    Toast.makeText(RaiderLogin.this,"Login Failed",Toast.LENGTH_LONG);
 
-                // setDoInput and setDoOutput method depict handling of both send and receive
-                conn.setDoInput(true);
-                conn.setDoOutput(true);
-
-                // Append parameters to URL
-                Uri.Builder builder = new Uri.Builder()
-                        .appendQueryParameter("username", params[0])
-                        .appendQueryParameter("password", params[1]);
-                String query = builder.build().getEncodedQuery();
-
-                // Open connection for sending data
-                OutputStream os = conn.getOutputStream();
-                BufferedWriter writer = new BufferedWriter(
-                        new OutputStreamWriter(os, "UTF-8"));
-                writer.write(query);
-                writer.flush();
-                writer.close();
-                os.close();
-                conn.connect();
-
-            } catch (IOException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-                return "exception";
-            }
-
-            try {
-
-                int response_code = conn.getResponseCode();
-
-                // Check if successful connection made
-                if (response_code == HttpURLConnection.HTTP_OK) {
-
-                    // Read data sent from server
-                    InputStream input = conn.getInputStream();
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-                    StringBuilder result = new StringBuilder();
-                    String line;
-
-                    while ((line = reader.readLine()) != null) {
-                        result.append(line);
-                    }
-
-                    // Pass data to onPostExecute method
-                    return(result.toString());
-
-                }else{
-
-                    return("unsuccessful");
                 }
 
-            } catch (IOException e) {
-                e.printStackTrace();
-                return "exception";
-            } finally {
-                conn.disconnect();
-            }
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, String result) {
 
+                    Toast.makeText(RaiderLogin.this, "Successfull", Toast.LENGTH_LONG).show();
 
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-
-            //this method will be running on UI thread
-
-            pdLoading.dismiss();
-
-            if(result.equalsIgnoreCase("true"))
-            {
+                    progressDialog.dismiss();
+                    if(result.equalsIgnoreCase("true"))
+                    {
                 /* Here launching another activity when login successful. If you persist login state
                 use sharedPreferences of Android. and logout button to clear sharedPreferences.
                  */
 
-                Intent intent = new Intent(RaiderLogin.this,MainActivity.class);
-                startActivity(intent);
-                RaiderLogin.this.finish();
+                    }else // If username and password does not match display a error message
+                        if (result.equalsIgnoreCase("false"))
+                            Toast.makeText(RaiderLogin.this, "Invalid email or password", Toast.LENGTH_LONG).show();
+                        else if (result.equalsIgnoreCase("exception") || result.equalsIgnoreCase("unsuccessful")) {
 
-            }else // If username and password does not match display a error message
-                if (result.equalsIgnoreCase("false"))
-                    Toast.makeText(RaiderLogin.this, "Invalid email or password", Toast.LENGTH_LONG).show();
-                else if (result.equalsIgnoreCase("exception") || result.equalsIgnoreCase("unsuccessful")) {
+                            Toast.makeText(RaiderLogin.this, "OOPs! Something went wrong. Connection Problem.", Toast.LENGTH_LONG).show();
 
-                    Toast.makeText(RaiderLogin.this, "OOPs! Something went wrong. Connection Problem.", Toast.LENGTH_LONG).show();
+                        }
 
                 }
+            });
+            }
         }
 
     }
-}
+
+
+
+
