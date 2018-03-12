@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">BuseTaxi</string>
+    <string name="email">Your Email</string>
+    <string name="password">Your Password</string>
+</resources>
