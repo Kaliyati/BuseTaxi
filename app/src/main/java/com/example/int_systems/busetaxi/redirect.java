@@ -33,15 +33,15 @@ public class redirect extends AppCompatActivity {
       else{
             String id =res.getString(0);
             if (id== raiderAccessID){
-                Toast.makeText(redirect.this,"I have an id",Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(redirect.this,RaiderLogin.class);
+
+                Intent intent = new Intent(redirect.this,RaiderMainActivity.class);
                 redirect.this.startActivity(intent);
 
             }
 
             else {
-                Toast.makeText(redirect.this,"i have an id",Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(redirect.this,DriverLogin.class);
+
+                Intent intent = new Intent(redirect.this,RaiderMainActivity.class);
                 redirect.this.startActivity(intent);
             }
         }

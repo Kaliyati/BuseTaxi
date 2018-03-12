@@ -87,27 +87,26 @@ public class RaiderLogin extends AppCompatActivity implements View.OnClickListen
 
             AsyncHttpClient client = new AsyncHttpClient();
             RequestParams params = new RequestParams();
-            params.put("Email", email);
-            params.put("Password",password);
+            params.put("email", email);
+            params.put("password",password);
+
             client.post("http://10.0.2.2/BuseTaxi/login.php", params, new TextHttpResponseHandler() {
                 @Override
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                     progressDialog.dismiss();
-                    Toast.makeText(RaiderLogin.this,"Login Failed",Toast.LENGTH_LONG);
+                    Toast.makeText(RaiderLogin.this,"Login Failed check your connectivity",Toast.LENGTH_LONG);
 
                 }
 
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, String result) {
 
-                    Toast.makeText(RaiderLogin.this, "Successfull", Toast.LENGTH_LONG).show();
-
-                    progressDialog.dismiss();
+                     progressDialog.dismiss();
                     if(result.equalsIgnoreCase("true"))
                     {
-                /* Here launching another activity when login successful. If you persist login state
-                use sharedPreferences of Android. and logout button to clear sharedPreferences.
-                 */
+                        Toast.makeText(RaiderLogin.this, "Login successfull", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(RaiderLogin.this,RaiderMainActivity.class);
+                        RaiderLogin.this.startActivity(intent);
 
                     }else // If username and password does not match display a error message
                         if (result.equalsIgnoreCase("false"))
