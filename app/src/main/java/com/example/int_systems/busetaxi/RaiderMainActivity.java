@@ -40,8 +40,8 @@ public class RaiderMainActivity extends AppCompatActivity {
     }
 
     public void GPSStatus(){
-        locationManager = (LocationManager)RaiderMainActivity.getSystemService(Context.LOCATION_SERVICE);
         GpsStatus = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
     }
 
 
