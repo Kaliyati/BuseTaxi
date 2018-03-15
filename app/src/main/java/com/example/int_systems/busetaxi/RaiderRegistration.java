@@ -45,7 +45,7 @@ public class RaiderRegistration extends AppCompatActivity implements View.OnClic
         }
         if(view == textViewlogin){
             //open login activity when user taps on the already registered textview
-            startActivity(new Intent(this, RaiderLogin.class));
+            startActivity(new Intent(this, RiderLogin.class));
         }
     }
 

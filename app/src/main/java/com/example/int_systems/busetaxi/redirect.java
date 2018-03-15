@@ -34,14 +34,14 @@ public class redirect extends AppCompatActivity {
             String id =res.getString(0);
             if (id== raiderAccessID){
 
-                Intent intent = new Intent(redirect.this,RaiderMainActivity.class);
+                Intent intent = new Intent(redirect.this,RiderMain.class);
                 redirect.this.startActivity(intent);
 
             }
 
             else {
 
-                Intent intent = new Intent(redirect.this,RaiderMainActivity.class);
+                Intent intent = new Intent(redirect.this,RiderMain.class);
                 redirect.this.startActivity(intent);
             }
         }
