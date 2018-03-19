@@ -1,6 +1,7 @@
 package com.example.int_systems.busetaxi;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -10,11 +11,18 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Toast;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
 
-import com.example.int_systems.busetaxi.Buse_service.panicButton;
+import cz.msebera.android.httpclient.Header;
 
 public class RiderMain extends AppCompatActivity  {
-    panicButton myobject = new panicButton();
+
+    String panic = "TRUE";
+    private ProgressDialog progress;
+    AsyncHttpClient client = new AsyncHttpClient();
+    RequestParams params = new RequestParams();
 
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -53,9 +61,33 @@ public class RiderMain extends AppCompatActivity  {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
 
-                        myobject.sendPanic();
+                      sendPanic();
 
 
+                    }
+
+                    private void sendPanic() {
+
+                        params.put("panic", panic);
+                        client.post("http://10.0.2.2/BuseTaxi/panic.php", params, new TextHttpResponseHandler() {
+                            @Override
+                            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+
+                                Toast.makeText(RiderMain.this, "Emergency Contacted ", Toast.LENGTH_SHORT).show();
+
+
+                                //   negative();
+                            }
+
+                            @Override
+                            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                                // return responseString;
+                                Toast.makeText(RiderMain.this, "Emergency Contacted ", Toast.LENGTH_SHORT).show();
+
+                            }
+
+
+                        });
                     }
                 });
         alertDialogBuilder.setNegativeButton(R.string.negative_button,
@@ -72,5 +104,6 @@ public class RiderMain extends AppCompatActivity  {
         alertDialog.show();
 
     }
+
 
 }
