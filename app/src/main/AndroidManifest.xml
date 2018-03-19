@@ -45,6 +45,10 @@
         <activity
             android:name=".RiderMain"
             android:label="@string/title_activity_rider_main"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Dashboard"
+            android:label="@string/title_activity_dashboard"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
