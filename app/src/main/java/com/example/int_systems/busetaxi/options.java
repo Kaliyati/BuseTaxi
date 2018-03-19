@@ -1,7 +1,6 @@
 package com.example.int_systems.busetaxi;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -72,6 +71,16 @@ public class options extends AppCompatActivity implements View.OnClickListener {
 
     //get user access level and automatically start the related activities
 
+    public static class DriverLogin extends AppCompatActivity {
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_driver_login);
+
+
+        }
     }
+}
 
 

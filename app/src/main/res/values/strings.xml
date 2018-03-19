@@ -3,4 +3,17 @@
     <string name="email">Your Email</string>
     <string name="password">Your Password</string>
     <string name="title_activity_maps">Map</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_rider_main">RiderMain</string>
+    <string name="positive_button">Sure</string>
+    <string name="decision">You are about to request an emergency response</string>
+    <string name="negative_button">Cancel</string>
+    <string name="alert_tiltle">Emergency Request</string>
+    <string name="alert_decision"></string>
+    <string name="success_decision">Authority alerted</string>
+    <string name="success_alert">Successfull</string>
+    <string name="error_decision">An error occured try again</string>
+    <string name="error_alert">Error Result</string>
 </resources>

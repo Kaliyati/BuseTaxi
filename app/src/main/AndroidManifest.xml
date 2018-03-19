@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".RiderMain"
+            android:name=".SplashScreen"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,9 +24,8 @@
         </activity>
         <activity android:name=".options" />
         <activity android:name=".MainActivity" />
-
         <activity android:name=".RaiderRegistration" />
-        <activity android:name=".DriverLogin" />
+        <activity android:name=".options$DriverLogin" />
         <activity android:name=".redirect" />
 
         <service
@@ -34,12 +33,19 @@
             android:exported="false" />
 
         <activity android:name=".RiderLogin" />
-        <activity android:name=".SplashScreen" />
-        <activity android:name=".RiderReg"></activity><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
-     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+        <activity android:name=".RiderReg" />
+        <!--
+ ATTENTION: This was auto-generated to add Google Play services to your project for
+     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
+        -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name=".RiderMain"
+            android:label="@string/title_activity_rider_main"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
