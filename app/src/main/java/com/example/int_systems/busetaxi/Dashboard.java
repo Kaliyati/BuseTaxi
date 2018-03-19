@@ -1,5 +1,8 @@
 package com.example.int_systems.busetaxi;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -19,8 +22,19 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
+
+import cz.msebera.android.httpclient.Header;
 
 public class Dashboard extends AppCompatActivity {
+    String panic = "TRUE";
+    private ProgressDialog progress;
+    AsyncHttpClient client = new AsyncHttpClient();
+    RequestParams params = new RequestParams();
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -61,10 +75,66 @@ public class Dashboard extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "This is my action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
+                 openEmergency();
+
+
+                }
         });
+
+    }
+
+    public void openEmergency(){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle(R.string.alert_tiltle);
+        alertDialogBuilder.setIcon(R.drawable.ic_error_alert);
+        alertDialogBuilder.setMessage(R.string.decision);
+        alertDialogBuilder.setPositiveButton(R.string.positive_button,
+                new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+
+                        sendPanic();
+
+
+                    }
+
+                    private void sendPanic() {
+
+                        params.put("panic", panic);
+                        client.post("http://10.0.2.2/BuseTaxi/panic.php", params, new TextHttpResponseHandler() {
+                            @Override
+                            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+
+                                Toast.makeText(Dashboard.this, "Emergency Contacted ", Toast.LENGTH_SHORT).show();
+
+
+                                //   negative();
+                            }
+
+                            @Override
+                            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                                // return responseString;
+                                Toast.makeText(Dashboard.this, "Emergency Contacted ", Toast.LENGTH_SHORT).show();
+
+                            }
+
+
+                        });
+                    }
+                });
+        alertDialogBuilder.setNegativeButton(R.string.negative_button,
+                new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(Dashboard.this,"Panic Button Deactivated",Toast.LENGTH_LONG).show();
+
+                    }
+                });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
 
     }
 
