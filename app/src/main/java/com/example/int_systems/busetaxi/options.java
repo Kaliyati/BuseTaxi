@@ -60,7 +60,7 @@ public class options extends AppCompatActivity implements View.OnClickListener {
         );
         if(isInserted == true){
             Toast.makeText(options.this,"Profile successufully created",Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(options.this,RiderMain.class);
+            Intent intent = new Intent(options.this,RiderLogin.class);
             options.this.startActivity(intent);
         }
 

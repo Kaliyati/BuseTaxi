@@ -27,11 +27,6 @@
         <activity android:name=".RaiderRegistration" />
         <activity android:name=".options$DriverLogin" />
         <activity android:name=".redirect" />
-
-        <service
-            android:name=".MyIntentService"
-            android:exported="false" />
-
         <activity android:name=".RiderLogin" />
         <activity android:name=".RiderReg" />
         <!--

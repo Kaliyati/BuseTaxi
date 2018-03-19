@@ -100,11 +100,18 @@ public class Dashboard extends AppCompatActivity {
                     }
 
                     private void sendPanic() {
+                        final ProgressDialog progressDialog = new ProgressDialog(Dashboard.this);
+                        progressDialog.setTitle("Sending Request");
+                        progressDialog.setMessage("Please wait");
+                        progressDialog.setCancelable(true);
+                        progressDialog.show();
+
 
                         params.put("panic", panic);
                         client.post("http://10.0.2.2/BuseTaxi/panic.php", params, new TextHttpResponseHandler() {
                             @Override
                             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                                progressDialog.dismiss();
 
                                 Toast.makeText(Dashboard.this, "Emergency Contacted ", Toast.LENGTH_SHORT).show();
 
@@ -115,7 +122,8 @@ public class Dashboard extends AppCompatActivity {
                             @Override
                             public void onSuccess(int statusCode, Header[] headers, String responseString) {
                                 // return responseString;
-                                Toast.makeText(Dashboard.this, "Emergency Contacted ", Toast.LENGTH_SHORT).show();
+                                progressDialog.dismiss();
+                                Toast.makeText(Dashboard.this, "An error occured ", Toast.LENGTH_SHORT).show();
 
                             }
 

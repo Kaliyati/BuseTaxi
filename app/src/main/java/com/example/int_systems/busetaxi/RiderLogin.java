@@ -58,23 +58,24 @@ public class RiderLogin extends AppCompatActivity implements View.OnClickListene
     }
 
     private void Riderlogin() {
-        Toast.makeText(RiderLogin.this, "Fill in all the Feilds", Toast.LENGTH_LONG).show();
+        final ProgressDialog progressDialog = new ProgressDialog(RiderLogin.this);
+
+        progressDialog.setTitle("Signing in");
+        progressDialog.setMessage("Please wait");
+        progressDialog.setCancelable(true);
+        progressDialog.show();
+
 
         String email = etEmail.getText().toString();
         String password = etPassword.getText().toString();
 
         if (email.contentEquals("") || password.contentEquals("")) {
+            progressDialog.dismiss();
             Toast.makeText(RiderLogin.this, "Fill in all the Feilds", Toast.LENGTH_LONG).show();
+
 
         } else {
             //Initialising progress dialog
-            final ProgressDialog progressDialog = new ProgressDialog(RiderLogin.this);
-
-            progressDialog.setTitle("Signing in");
-            progressDialog.setMessage("Please wait");
-            progressDialog.setCancelable(true);
-            progressDialog.show();
-
             AsyncHttpClient client = new AsyncHttpClient();
             RequestParams params = new RequestParams();
             params.put("email", email);
@@ -94,7 +95,7 @@ public class RiderLogin extends AppCompatActivity implements View.OnClickListene
                     progressDialog.dismiss();
                     if (result.equalsIgnoreCase("true")) {
                         Toast.makeText(RiderLogin.this, "Login successfull", Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(RiderLogin.this, RiderMain.class);
+                        Intent intent = new Intent(RiderLogin.this, Dashboard.class);
                         RiderLogin.this.startActivity(intent);
 
                     } else // If username and password does not match display a error message
