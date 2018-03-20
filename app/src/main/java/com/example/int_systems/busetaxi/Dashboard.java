@@ -123,7 +123,7 @@ public class Dashboard extends AppCompatActivity {
                             public void onSuccess(int statusCode, Header[] headers, String responseString) {
                                 // return responseString;
                                 progressDialog.dismiss();
-                                Toast.makeText(Dashboard.this, "An error occured ", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Dashboard.this, "Panic activated", Toast.LENGTH_SHORT).show();
 
                             }
 
