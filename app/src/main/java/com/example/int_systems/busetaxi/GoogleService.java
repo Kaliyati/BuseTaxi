@@ -142,6 +142,10 @@ public class GoogleService extends Service implements LocationListener {
         intent.putExtra("latutide",location.getLatitude()+"");
         intent.putExtra("longitude",location.getLongitude()+"");
         sendBroadcast(intent);
+        System.out.println("+++++++++++++++");
+        System.out.println(location.getLatitude());
+        System.out.println("+++++++++++++++++");
+        System.out.println(location.getLongitude());
     }
 
 
