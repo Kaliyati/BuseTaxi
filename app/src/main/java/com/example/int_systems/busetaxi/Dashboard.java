@@ -3,6 +3,7 @@ package com.example.int_systems.busetaxi;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -24,6 +25,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.int_systems.busetaxi.tabsDirectory.tab1;
+import com.example.int_systems.busetaxi.tabsDirectory.tab2;
+import com.example.int_systems.busetaxi.tabsDirectory.tab3;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
@@ -67,6 +71,9 @@ public class Dashboard extends AppCompatActivity {
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+
+        Intent intent =new Intent(this,GoogleService.class);
+        startService(intent);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
@@ -218,9 +225,18 @@ public class Dashboard extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            switch (position){
+                case 0:
+                    tab1 tab1 =new tab1();
+                    return tab1;
+                case 1:
+                    tab2 tab2 =new tab2();
+                    return tab2;
+                case 2:
+                    tab3 tab3 =new tab3();
+                    return tab3;
+            }
+            return null;
         }
 
         @Override
